@@ -29,11 +29,7 @@ function Transaction () {
   this.joinsplits = []
 }
 
-<<<<<<< HEAD
-Transaction.prototype.setOverwinter = (expiry, versionGroupId, version) => {
-=======
 Transaction.prototype.setOverwinter = function (expiry, versionGroupId, version) {
->>>>>>> parent of e35940d... Merge pull request #4 from wo01/zcash
   this.zcash = true;
   this.version = Math.max((version||3), 3);
   this.versionGroupId=(versionGroupId||0x03c48270);
