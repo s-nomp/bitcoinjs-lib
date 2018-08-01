@@ -23,7 +23,7 @@ function vectorSize (someVector) {
 }
 
 function Transaction () {
-  this.version = 3
+  this.version = 1
   this.locktime = 0
   this.ins = []
   this.outs = []
@@ -698,8 +698,8 @@ Transaction.prototype.__toBuffer = function (buffer, initialOffset, __allowWitne
     writeSlice(i.x)
   }
 
-  if (this.version >= 3 && this.zcash) {
-    writeInt32(this.version | (1 << 31))
+  if (this.versionGroupId != null) {
+    writeInt32(this.version | (1 << 31));
     writeUInt32(this.versionGroupId)
   } else {
     writeInt32(this.version)
@@ -740,7 +740,7 @@ Transaction.prototype.__toBuffer = function (buffer, initialOffset, __allowWitne
 
   writeUInt32(this.locktime)
 
-  if (this.version >= 3 && this.zcash) {
+  if (this.expiry != null) {
     writeUInt32(this.expiry)
   }
 
