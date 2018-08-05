@@ -366,12 +366,8 @@ Transaction.prototype.__byteLength = function (__allowWitness) {
     this.outs.reduce(function (sum, output) { return sum + 8 + varSliceSize(output.script) }, 0) +
     (hasWitnesses ? this.ins.reduce(function (sum, input) { return sum + vectorSize(input.witness) }, 0) : 0) +
     this.joinsplitByteLength() +
-	//need to figure out what the below commented out line does. doesn't work with some coins.
-	//(this.version === 3 ? 12 : 0)
-	//this.versionGroupId and this.expiry are the original lines 
-	//and were removed. added back to stay functional.
-	(this.versionGroupId == null ? 0 : 4) +
-	(this.expiry == null ? 0 : 4)
+	//overwinter added byte length
+	(this.version === 3 ? 8 : 0)
    )
 }
 
