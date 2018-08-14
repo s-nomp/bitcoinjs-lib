@@ -524,7 +524,7 @@ TransactionBuilder.fromTransaction = function (transaction, network) {
   txb.setVersion(transaction.version)
   txb.setLockTime(transaction.locktime)
   if (version >= 3) {
-    txb.setVersionGroupId(transaction.versiongroupid)
+    txb.setVersionGroupId(transaction.versionGroupId)
     txb.setExpiry(transaction.expiry)
   }
 
