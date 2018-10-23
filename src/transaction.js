@@ -318,7 +318,7 @@ Transaction.prototype.addOutput = function (scriptPubKey, value) {
 }
 
 Transaction.prototype.hasWitnesses = function () {
-  return this.ins.some(function (x) {
+  return !this.isCoinbase() && this.ins.some(function (x) {
     return x.witness.length !== 0
   })
 }
