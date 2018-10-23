@@ -30,10 +30,20 @@ function Transaction () {
   this.joinsplits = []
 }
 
-Transaction.prototype.setOverwinter = function (expiry, versionGroupId, version) {
+Transaction.OVERWINTER_VERSION_GROUP_ID = 0x03C48270;
+Transaction.SAPLING_VERSION_GROUP_ID = 0x892F2085;
+
+Transaction.prototype.setOverwinter = function (expiry, versionGroupId) {
   this.zcash = true;
-  this.version = Math.max((version||3), 3);
-  this.versionGroupId=(versionGroupId||0x03c48270);
+  this.version = 3;
+  this.versionGroupId=(versionGroupId||Transaction.OVERWINTER_VERSION_GROUP_ID);
+  this.expiry=(expiry||0);
+}
+
+Transaction.prototype.setSapling = function (expiry, versionGroupId) {
+  this.zcash = true;
+  this.version = 4;
+  this.versionGroupId=(versionGroupId||Transaction.SAPLING_VERSION_GROUP_ID);
   this.expiry=(expiry||0);
 }
 
