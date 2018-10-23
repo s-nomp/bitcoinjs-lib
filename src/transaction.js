@@ -712,6 +712,12 @@ Transaction.prototype.__toBuffer = function (buffer, initialOffset, __allowWitne
   if (this.version >= 3 && this.zcash) {
     writeInt32(this.version | (1 << 31))
     writeUInt32(this.versionGroupId)
+    if (this.version === 4) {
+      // THIS DOES NOT SUPPORT SAPLING GENERALLY - THESE ARE DUMMIES THAT ASSUME NO SHIELDED SPENDS OR OUTPUTS
+      writeUInt64(0)
+      writeVarInt(0)  
+      writeVarInt(0)  
+    }
   } else {
     writeInt32(this.version)
   }
