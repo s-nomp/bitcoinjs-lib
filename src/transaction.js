@@ -318,7 +318,7 @@ Transaction.prototype.addOutput = function (scriptPubKey, value) {
 }
 
 Transaction.prototype.hasWitnesses = function () {
-  return !this.isCoinbase() && this.ins.some(function (x) {
+  return this.ins.some(function (x) {
     return x.witness.length !== 0
   })
 }
@@ -377,7 +377,7 @@ Transaction.prototype.__byteLength = function (__allowWitness) {
     (hasWitnesses ? this.ins.reduce(function (sum, input) { return sum + vectorSize(input.witness) }, 0) : 0) +
     this.joinsplitByteLength() +
 	//overwinter added byte length
-	(this.version === 3 ? 8 : 0)
+	((this.version === 3 || this.version === 4) ? 8 : 0)
    )
 }
 
