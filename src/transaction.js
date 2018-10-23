@@ -714,6 +714,7 @@ Transaction.prototype.__toBuffer = function (buffer, initialOffset, __allowWitne
     writeUInt32(this.versionGroupId)
     if (this.version === 4) {
       // THIS DOES NOT SUPPORT SAPLING GENERALLY - THESE ARE DUMMIES THAT ASSUME NO SHIELDED SPENDS OR OUTPUTS
+      console.log('adding sapling dummy data')
       writeUInt64(0)
       writeVarInt(0)  
       writeVarInt(0)  
