@@ -30,10 +30,20 @@ function Transaction () {
   this.joinsplits = []
 }
 
-Transaction.prototype.setOverwinter = function (expiry, versionGroupId, version) {
+Transaction.OVERWINTER_VERSION_GROUP_ID = 0x03C48270;
+Transaction.SAPLING_VERSION_GROUP_ID = 0x892F2085;
+
+Transaction.prototype.setOverwinter = function (expiry, versionGroupId) {
   this.zcash = true;
-  this.version = Math.max((version||3), 3);
-  this.versionGroupId=(versionGroupId||0x03c48270);
+  this.version = 3;
+  this.versionGroupId=(versionGroupId||Transaction.OVERWINTER_VERSION_GROUP_ID);
+  this.expiry=(expiry||0);
+}
+
+Transaction.prototype.setSapling = function (expiry, versionGroupId) {
+  this.zcash = true;
+  this.version = 4;
+  this.versionGroupId=(versionGroupId||Transaction.SAPLING_VERSION_GROUP_ID);
   this.expiry=(expiry||0);
 }
 
@@ -366,8 +376,9 @@ Transaction.prototype.__byteLength = function (__allowWitness) {
     this.outs.reduce(function (sum, output) { return sum + 8 + varSliceSize(output.script) }, 0) +
     (hasWitnesses ? this.ins.reduce(function (sum, input) { return sum + vectorSize(input.witness) }, 0) : 0) +
     this.joinsplitByteLength() +
-	//overwinter added byte length
-	(this.version === 3 ? 8 : 0)
+    //overwinter added byte length
+    ((this.version >= 3) ? 8 : 0) +
+    ((this.version === 4) ? 8 + (varuint.encodingLength(0) * 2) : 0)
    )
 }
 
@@ -702,6 +713,13 @@ Transaction.prototype.__toBuffer = function (buffer, initialOffset, __allowWitne
   if (this.version >= 3 && this.zcash) {
     writeInt32(this.version | (1 << 31))
     writeUInt32(this.versionGroupId)
+    if (this.version === 4) {
+      // THIS DOES NOT SUPPORT SAPLING GENERALLY - THESE ARE DUMMIES THAT ASSUME NO SHIELDED SPENDS OR OUTPUTS
+      console.log('adding sapling dummy data')
+      writeUInt64(0)
+      writeVarInt(0)  
+      writeVarInt(0)  
+    }
   } else {
     writeInt32(this.version)
   }
